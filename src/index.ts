@@ -1,5 +1,10 @@
-function hello(){
-    return 'Hello R3X'
+
+// execute function fires up server and passes a callback back to the server
+function execute(){
+
 }
 
-console.log(hello())
+
+function handle(){
+
+}
