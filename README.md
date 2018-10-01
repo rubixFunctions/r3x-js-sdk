@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/rubixFunctions/r3x-js-sdk.svg?style=svg&circle-token=ea49ae7fcdad52c04d1d567200ad09abf15a2044)](https://circleci.com/gh/rubixFunctions/r3x-js-sdk)
 [![License](https://img.shields.io/badge/-Apache%202.0-blue.svg)](https://opensource.org/s/Apache-2.0)
-image:https://badges.frapsoft.com/typescript/code/typescript.svg?v=101[]
+
 
 
 ## Getting Started
