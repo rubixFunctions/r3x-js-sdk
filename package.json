@@ -17,7 +17,8 @@
     "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run check"
+    "posttest": "npm run check",
+    "start": "npm run compile && node build/src/hello-r3x.js"
   },
   "devDependencies": {
     "gts": "^0.8.0",
