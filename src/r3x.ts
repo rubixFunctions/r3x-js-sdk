@@ -1,26 +1,28 @@
-import { ServerResponse, RequestOptions, ServerRequest } from "http";
+import { ServerResponse, RequestOptions, ServerRequest, Server } from "http";
 import { JSONHandler } from './handlers/JSONhandler';
 
-let fs = require('fs')
 let http = require('http')
-let path = require('path')
-
 
 // handle user function
-export function execute(r3x: Function, scheme: any) {
-    console.log("r3x Execute Fired")
-    // todo add error handler
-    HTTPStream(r3x, scheme)
+export function execute(r3x: Function, schema: any) {
+    HTTPStream(r3x, schema)
 }
 
-// handle http strea,
-function HTTPStream(r3x: Function, scheme: any) {
+// handle http stream,
+function HTTPStream(r3x: Function, schema: any){
+    let port = process.env.PORT || 8080
+
+    if (port == null) {
+        console.log("Error Configuration. Missing Port")
+        process.exit(2)
+    }
+
     let functionHandler = (req: ServerRequest, res: ServerResponse) => {
-        console.log("Server Hit")
-        console.log(req)
         let input = new JSONHandler()
     
-        req.on('data', chunk => {
+        req.on('error', (err) => {
+            console.log('Something went wrong', err)
+        }).on('data', chunk => {
             input.pushData(chunk)
         }).on('end', () => {
             let headers = {}
@@ -37,24 +39,33 @@ function HTTPStream(r3x: Function, scheme: any) {
             }).then((result) => {
                 return sendResponse(res, result)
             }, (error) => {
-
+                console.log('Error in function', error)
+            }).then(() => {
+                res.end()
+                res.on('error', (err) => {
+                    console.log("Something went wrong", err)
+                })
             })
         })
     }
 
-    let server = http.createServer(functionHandler).listen(8080)
-
-    return () => {
-        console.log("Running")
-        server
-    }
+    http.createServer(functionHandler).listen(port)
+    .on('error', (error : any) => {
+        console.log(`Connection failed to port ${port}`, error)
+        process.exit(2)
+    })
 } 
 
 
 // handle response
 function sendResponse(resp : any, result : any){
     console.log(result)
-    //resp.sendResponse(result)
+    resp.writeHead(200, 'OK')
+    let pro : Promise<any> | undefined
+    if(result != null) {
+        pro = Promise.resolve(resp.write(JSON.stringify(result)))
+    }
+    return pro
 }
 
 // handle error
