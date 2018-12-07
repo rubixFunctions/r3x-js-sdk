@@ -1,6 +1,7 @@
 # RubiX JavaScript SDK
 
 [![CircleCI](https://circleci.com/gh/rubixFunctions/r3x-js-sdk.svg?style=svg&circle-token=ea49ae7fcdad52c04d1d567200ad09abf15a2044)](https://circleci.com/gh/rubixFunctions/r3x-js-sdk)
+[![npm version](http://img.shields.io/npm/v/REPO.svg?style=flat)](https://www.npmjs.com/package/@rubixfunctions/r3x-js-sdk "View this project on npm")
 [![License](https://img.shields.io/badge/-Apache%202.0-blue.svg)](https://opensource.org/s/Apache-2.0)
 
 ## Getting Started
