@@ -17,13 +17,14 @@ export function execute(r3x: Function, scheme: any) {
 function HTTPStream(r3x: Function, scheme: any) {
     let functionHandler = (req: ServerRequest, res: ServerResponse) => {
         console.log("Server Hit")
+        console.log(req)
         let input = new JSONHandler()
     
         req.on('data', chunk => {
             input.pushData(chunk)
         }).on('end', () => {
             let headers = {}
-            let rewHeaders = req.rawHeaders
+            let rawHeaders = req.rawHeaders
 
             let body = input.getBody()
 
@@ -52,7 +53,8 @@ function HTTPStream(r3x: Function, scheme: any) {
 
 // handle response
 function sendResponse(resp : any, result : any){
-    console.log("hello bah")
+    console.log(result)
+    //resp.sendResponse(result)
 }
 
 // handle error
