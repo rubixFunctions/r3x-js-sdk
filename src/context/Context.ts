@@ -1,5 +1,3 @@
-import bodyParser = require("body-parser");
-
 export interface Context{
     getConfig(): any 
     getBody(): any
