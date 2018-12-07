@@ -1,7 +1,10 @@
 {
   "name": "@rubixfunctions/r3x-js-sdk",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
+  "description": "SDK to allow for ease of development of a function as a container",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/rubixFunctions/r3x-js-sdk"},
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
   "files": [
@@ -26,7 +29,6 @@
   },
   "dependencies": {
     "@types/express": "^4.16.0",
-    "@types/node": "^10.9.2",
-    "express": "^4.16.3"
+    "@types/node": "^10.9.2"
   }
 }
