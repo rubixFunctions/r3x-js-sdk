@@ -1,6 +1,6 @@
 {
-  "name": "r3x-js-sdk",
-  "version": "0.0.0",
+  "name": "@rubixfunctions/r3x-js-sdk",
+  "version": "0.0.1",
   "description": "",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
