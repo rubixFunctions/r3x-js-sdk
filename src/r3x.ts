@@ -1,20 +1,17 @@
 import { ServerResponse, RequestOptions, ServerRequest, Server } from "http";
 import { JSONHandler } from './handlers/JSONhandler';
 
-let fs = require('fs')
 let http = require('http')
-let path = require('path')
-
 
 // handle user function
-export function execute(r3x: Function, scheme: any) {
+export function execute(r3x: Function, schema: any) {
     console.log("r3x Execute Fired")
     // todo add error handler
-    HTTPStream(r3x, scheme)
+    HTTPStream(r3x, schema)
 }
 
 // handle http stream,
-function HTTPStream(r3x: Function, scheme: any){
+function HTTPStream(r3x: Function, schema: any){
     let port = process.env.PORT || 8080
 
     if (port == null) {

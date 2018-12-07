@@ -11,5 +11,14 @@ $ git clone git@github.com:rubixFunctions/r3x-js-sdk.git
 $ npm install
 $ npm start
 ```
+
+## Running Function
+For development and testing purposes, the function is available and can be run as a container.
+```
+$ docker pull quay.io/ciaranroche/r3x-js-hello-world
+$ docker run -t -p 8080:8080 quay.io/ciaranroche/r3x-js-hello-world
+```
+Once running POST request to `localhost:8080`
+
 ## License
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details
