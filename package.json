@@ -6,8 +6,11 @@
     "type": "git",
     "url": "https://github.com/rubixFunctions/r3x-js-sdk"
   },
-  "main": "dst/index.js",
-  "types": "dst/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist/src"		 
+  ],
   "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
@@ -19,7 +22,7 @@
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run check",
-    "start": "npm run compile && node /dst/hello-r3x.js"
+    "start": "npm run compile && node /dist/src/hello-r3x.js"
   },
   "devDependencies": {
     "gts": "^0.8.0",
