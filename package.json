@@ -1,6 +1,6 @@
 {
   "name": "@rubixfunctions/r3x-js-sdk",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "SDK to allow for ease of development of a function as a container",
   "repository": {
     "type": "git",
