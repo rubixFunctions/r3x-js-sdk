@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/rubixFunctions/r3x-js-sdk"
   },
-  "main": "dist/index.js",
+  "main": "dist/r3x.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
