@@ -1,5 +1,5 @@
-import { ServerResponse, RequestOptions, ServerRequest, Server } from "http";
-import { JSONHandler } from './handlers/JSONhandler';
+import { ServerResponse, IncomingMessage } from "http";
+import { JSONHandler } from './src/handlers/JSONhandler';
 
 let http = require('http')
 
@@ -17,7 +17,7 @@ function HTTPStream(r3x: Function, schema: any){
         process.exit(2)
     }
 
-    let functionHandler = (req: ServerRequest, res: ServerResponse) => {
+    let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
         let input = new JSONHandler()
     
         req.on('error', (err) => {
