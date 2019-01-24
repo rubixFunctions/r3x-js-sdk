@@ -1,14 +1,15 @@
 {
   "name": "@rubixfunctions/r3x-js-sdk",
-  "version": "0.0.2",
+  "version": "0.0.7",
   "description": "SDK to allow for ease of development of a function as a container",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/rubixFunctions/r3x-js-sdk"},
-  "main": "index.js",
-  "types": "index.d.ts",
+    "type": "git",
+    "url": "https://github.com/rubixFunctions/r3x-js-sdk"
+  },
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "files": [
-    "."
+    "dist/src"
   ],
   "license": "Apache-2.0",
   "keywords": [],
@@ -16,12 +17,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "check": "gts check",
     "clean": "gts clean",
-    "compile": "tsc -p .",
+    "compile": "tsc",
     "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run check",
-    "start": "npm run compile && node /hello-r3x.js"
+    "start": "npm run compile && node /dist/src/hello-r3x.js"
   },
   "devDependencies": {
     "gts": "^0.8.0",

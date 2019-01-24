@@ -2,11 +2,11 @@
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "."
+    "outDir": "dist"
   },
   "include": [
-    "*.ts",
-    "**/*.ts",
+    "src/*.ts",
+    "src/**/*.ts",
     "test/*.ts",
     "test/**/*.ts"
   ]
