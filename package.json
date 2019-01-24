@@ -1,6 +1,6 @@
 {
   "name": "@rubixfunctions/r3x-js-sdk",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "SDK to allow for ease of development of a function as a container",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "files": [
-    "dist/src"		 
+    "dist/src"
   ],
   "license": "Apache-2.0",
   "keywords": [],
