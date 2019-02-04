@@ -14,12 +14,15 @@ $ npm start
 ```
 
 ## Running Function
-For development and testing purposes, the function is available and can be run as a container.
+For development and testing purposes, a function is available and can be run as a container.
 ```
-$ docker pull quay.io/ciaranroche/r3x-js-hello-world
-$ docker run -t -p 8080:8080 quay.io/ciaranroche/r3x-js-hello-world
+$ docker pull quay.io/rubixfunctions/r3x-js-showcase
+$ docker run -t -p 8080:8080 quay.io/rubixfunctions/r3x-js-showcase
 ```
 Once running POST request to `localhost:8080`
+
+## Documentation
+For full information on how to use the SDK and deploy a function to Knative, refer to our [Documentation here.](https://github.com/rubixFunctions/r3x-docs/blob/master/install/README.md)
 
 ## License
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details
