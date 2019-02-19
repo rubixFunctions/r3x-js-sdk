@@ -1,7 +1,12 @@
 import { ServerResponse, IncomingMessage } from "http";
 import { JSONHandler } from './src/handlers/JSONhandler';
+import { ErrorHandler } from './src/error/ErrorHandler'
 
 let http = require('http')
+
+let error = new ErrorHandler()
+
+const exceptionMessage = 'Function Exception'
 
 // handle user function
 export function execute(r3x: Function, schema: any) {
@@ -19,9 +24,14 @@ function HTTPStream(r3x: Function, schema: any){
 
     let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
         let input = new JSONHandler()
-    
+
+        if (req.method !== 'POST'){
+            error.sendJSONError(res, 400, {message: "Invalid method", detail: `${req.method} ${req.url}`})
+            return
+        }
+
         req.on('error', (err) => {
-            console.log('Something went wrong', err)
+            error.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
         }).on('data', chunk => {
             input.pushData(chunk)
         }).on('end', () => {
@@ -39,11 +49,12 @@ function HTTPStream(r3x: Function, schema: any){
             }).then((result) => {
                 return sendResponse(res, result)
             }, (error) => {
-                console.log('Error in function', error)
+                error.sendJSONError(res, 502, {message: exceptionMessage , detail: error.message.toString()})
+
             }).then(() => {
                 res.end()
                 res.on('error', (err) => {
-                    console.log("Something went wrong", err)
+                    error.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
                 })
             })
         })
@@ -66,9 +77,4 @@ function sendResponse(resp : any, result : any){
         pro = Promise.resolve(resp.write(JSON.stringify(result)))
     }
     return pro
-}
-
-// handle error
-function sendError(resp : any, code : any, error : any){
-
 }

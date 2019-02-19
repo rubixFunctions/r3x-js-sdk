@@ -22,7 +22,7 @@
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run check",
-    "start": "npm run compile && node /dist/hello-r3x.js"
+    "start": "npm run compile && node ./dist/hello-r3x.js"
   },
   "devDependencies": {
     "@types/node": "^10.12.18",
