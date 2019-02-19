@@ -1,6 +1,6 @@
-import { Context } from "./Context";
+import { ContextInt } from "./ContextInt";
 
-class ContextHandler implements Context{
+class ContextHandler implements ContextInt{
     config : any
     payload : any
     headers : any
@@ -119,7 +119,6 @@ class ContextHandler implements Context{
     getResponseContentType(): string {
         return this.getResponseHeader('Content-Type')
     }
-
-
-
 }
+
+export { ContextHandler };

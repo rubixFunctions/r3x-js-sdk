@@ -1,6 +1,7 @@
 import { ServerResponse, IncomingMessage } from "http";
 import { JSONHandler } from './src/handlers/JSONhandler';
 import { ErrorHandler } from './src/error/ErrorHandler'
+import { Context } from './src/context/Context'
 
 let http = require('http')
 
@@ -36,9 +37,11 @@ function HTTPStream(r3x: Function, schema: any){
             input.pushData(chunk)
         }).on('end', () => {
             let headers = {}
-            let rawHeaders = req.rawHeaders
-
+            
             let body = input.getBody()
+            let cont = new Context(body, headers)
+
+            cont.responseContentType = 'application/json'
 
             new Promise(function (res, rej) {
                 try {
@@ -47,7 +50,7 @@ function HTTPStream(r3x: Function, schema: any){
                     rej(err)
                 } 
             }).then((result) => {
-                return sendResponse(res, result)
+                return sendResponse(cont, res, result)
             }, (error) => {
                 error.sendJSONError(res, 502, {message: exceptionMessage , detail: error.message.toString()})
 
@@ -69,9 +72,16 @@ function HTTPStream(r3x: Function, schema: any){
 
 
 // handle response
-function sendResponse(resp : any, result : any){
-    console.log(result)
+function sendResponse(cont: Context, resp : ServerResponse, result : any){
+    let headers = cont._responseHeaders
+    for (let key in headers) {
+        if (headers.hasOwnPropery(key)){
+            resp.setHeader(key, headers[key])
+        }
+    }
+    resp.removeHeader('Content-length')
     resp.writeHead(200, 'OK')
+    console.log(result)
     let pro : Promise<any> | undefined
     if(result != null) {
         pro = Promise.resolve(resp.write(JSON.stringify(result)))

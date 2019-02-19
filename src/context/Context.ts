@@ -1,14 +1,15 @@
-export interface Context{
-    getConfig(): any 
-    getBody(): any
-    getContentType(): any
-    getHeaders(): Object
-    responseHeaders(): Object
-    getAllHeaders(key: string): Array<string>
-    getHeader(key: string): string
-    getConfigValue(key: string): string
-    getResponseHeader(key: string): string
-    setResponseHeader(key: string, value: string): void
-    setResponseContentType(type: string): void
-    getResponseContentType(): string
+
+export class Context {
+    _payload: string
+    _headers: any
+    _responseHeaders: any
+    responseContentType: string
+
+
+    constructor(payload: string, headers: any){
+        this._payload = payload
+        this._headers = headers
+        this._responseHeaders = {}
+        this.responseContentType = ""
+    }
 }
