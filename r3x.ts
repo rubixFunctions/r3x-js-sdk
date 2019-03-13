@@ -28,6 +28,7 @@ function HTTPStream(r3x: Function, schema: any){
         res.setHeader('Access-Control-Request-Method', '*');
         res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
         res.setHeader('Access-Control-Allow-Headers', '*');
+        res.setHeader('Content-Type', 'application/json')
 
         let input = new JSONHandler()
 
