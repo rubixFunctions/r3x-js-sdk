@@ -24,9 +24,14 @@ function HTTPStream(r3x: Function, schema: any){
     }
 
     let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Request-Method', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', '*');
+
         let input = new JSONHandler()
 
-        if (req.method !== 'POST'){
+        if (req.method !== 'POST' && req.method !== 'OPTIONS'){
             error.sendJSONError(res, 400, {message: "Invalid method", detail: `${req.method} ${req.url}`})
             return
         }
@@ -81,6 +86,7 @@ function sendResponse(cont: Context, resp : ServerResponse, result : any){
     }
     resp.removeHeader('Content-length')
     resp.writeHead(200, 'OK')
+
     console.log(result)
     let pro : Promise<any> | undefined
     if(result != null) {

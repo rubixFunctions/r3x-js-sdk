@@ -4,7 +4,7 @@ import * as r3x from './r3x'
 
 let schema
 console.log("Execute Started . . . ")
-r3x.execute(function(){
-	let response = {'message' : 'Hello r3x function'}
+r3x.execute(function(input: any){
+	let response = {'message' : `${input.dictate}`}
 	return response 
 }, schema)
