@@ -5,7 +5,7 @@ import { Context } from './src/context/Context'
 
 let http = require('http')
 
-let error = new ErrorHandler()
+let errorRes = new ErrorHandler()
 
 const exceptionMessage = 'Function Exception'
 
@@ -33,12 +33,12 @@ function HTTPStream(r3x: Function, schema: any){
         let input = new JSONHandler()
 
         if (req.method !== 'POST' && req.method !== 'OPTIONS'){
-            error.sendJSONError(res, 400, {message: "Invalid method", detail: `${req.method} ${req.url}`})
+            errorRes.sendJSONError(res, 400, {message: "Invalid method", detail: `${req.method} ${req.url}`})
             return
         }
 
         req.on('error', (err) => {
-            error.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
+            errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
         }).on('data', chunk => {
             input.pushData(chunk)
         }).on('end', () => {
@@ -63,9 +63,9 @@ function HTTPStream(r3x: Function, schema: any){
             }).then(() => {
                 res.end()
                 res.on('error', (err) => {
-                    error.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
+                    errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
                 })
-            })
+            }).catch(err => errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()}))
         })
     }
 
