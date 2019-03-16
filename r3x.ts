@@ -58,7 +58,7 @@ function HTTPStream(r3x: Function, schema: any){
             }).then((result) => {
                 return sendResponse(cont, res, result)
             }, (error) => {
-                error.sendJSONError(res, 502, {message: exceptionMessage , detail: error.message.toString()})
+                errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: error.message.toString()})
 
             }).then(() => {
                 res.end()
