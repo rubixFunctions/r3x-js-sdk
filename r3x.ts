@@ -1,11 +1,15 @@
 import { ServerResponse, IncomingMessage } from "http";
 import { JSONHandler } from './src/handlers/JSONhandler';
-import { ErrorHandler } from './src/error/ErrorHandler'
-import { Context } from './src/context/Context'
+import { ErrorHandler } from './src/error/ErrorHandler';
+import { FuncSchema } from './src/schema/schemaHandler';
+import { Context } from './src/context/Context';
+import { join } from "path";
 
 let http = require('http')
 
 let errorRes = new ErrorHandler()
+
+let schema = new FuncSchema()
 
 const exceptionMessage = 'Function Exception'
 
@@ -24,8 +28,13 @@ function HTTPStream(r3x: Function){
     }
 
     let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
-        setCORS(res)
+
+        let cors = schema.getSchema(join(__dirname, "schema.json")).cors
         
+        if (cors) {
+            setCORS(res)
+        }
+
         let input = new JSONHandler()
 
         if (req.method !== 'POST' && req.method !== 'OPTIONS'){
