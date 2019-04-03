@@ -1,6 +1,7 @@
 import { ServerResponse} from "http";
 import { ErrorJSONMessage } from "./ErrorJSONMessage";
 
+// ErrorHandler, returns error message
 class ErrorHandler{
     sendJSONError(resp: ServerResponse, code: number, error: ErrorJSONMessage){
         let err = JSON.stringify(error)

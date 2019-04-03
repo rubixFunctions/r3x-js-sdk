@@ -1,5 +1,6 @@
 import { Handler } from "./Handler";
 
+// JSON Handler to parse body of incoming request
 class JSONHandler implements Handler {
     str: string;
     constructor() {

@@ -27,30 +27,36 @@ function HTTPStream(r3x: Function){
         console.log("Error Configuration. Missing Port")
         process.exit(2)
     }
-
+    // handles incoming request and response
     let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
+        //declare schema path and get if cors is to be enabled
         let schemaPath = join(__dirname, "schema.json")
         try {
             if (fs.existsSync(schemaPath)) {
                 let cors = schema.getSchema(schemaPath).cors
                 if (cors) {
+                    //set cors headers
                     setCORS(res)
                 }
             }
-          } catch(err) {
+        } catch(err) {
             errorRes.sendJSONError(res, 502, {message: "No `schema.json` detected" , detail: err.message.toString()})
-          }
-
+        }
+        
+        // declare JSON Handler
         let input = new JSONHandler()
 
+        // Check only POST and OPTIONS request. OPTIONS is allowed for preflight requests
         if (req.method !== 'POST' && req.method !== 'OPTIONS'){
             errorRes.sendJSONError(res, 400, {message: "Invalid method", detail: `${req.method} ${req.url}`})
             return
         }
 
+        // Handle request
         req.on('error', (err) => {
             errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
         }).on('data', chunk => {
+            // parse request body
             input.pushData(chunk)
         }).on('end', () => {
             let headers = {}
@@ -60,6 +66,7 @@ function HTTPStream(r3x: Function){
 
             cont.responseContentType = 'application/json'
 
+            // handle user function execution
             new Promise(function (res, rej) {
                 try {
                     return res(r3x(body))
@@ -80,6 +87,7 @@ function HTTPStream(r3x: Function){
         })
     }
 
+    // create http server
     http.createServer(functionHandler).listen(port)
     .on('error', (error : any) => {
         console.log(`Connection failed to port ${port}`, error)
@@ -107,6 +115,7 @@ function sendResponse(cont: Context, resp : ServerResponse, result : any){
     return pro
 }
 
+// set CORS headers
 function setCORS(res: ServerResponse) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Request-Method', '*');

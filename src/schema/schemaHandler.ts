@@ -7,6 +7,7 @@ interface schema {
     cors: boolean
 }
 
+// Parses and Returns Schema
 class FuncSchema {
     public getSchema(schemaLocation: string) : any{
         let rawdata = fs.readFileSync(schemaLocation);  

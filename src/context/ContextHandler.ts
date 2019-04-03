@@ -1,5 +1,6 @@
 import { ContextInt } from "./ContextInt";
 
+// Handles Context
 class ContextHandler implements ContextInt{
     config : any
     payload : any

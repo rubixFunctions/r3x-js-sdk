@@ -1,3 +1,4 @@
+// Context Interface
 export interface ContextInt{
     getConfig(): any 
     getBody(): any
