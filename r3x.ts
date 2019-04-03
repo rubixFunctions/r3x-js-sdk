@@ -24,12 +24,8 @@ function HTTPStream(r3x: Function){
     }
 
     let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Request-Method', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', '*');
-        res.setHeader('Content-Type', 'application/json')
-
+        setCORS(res)
+        
         let input = new JSONHandler()
 
         if (req.method !== 'POST' && req.method !== 'OPTIONS'){
@@ -94,4 +90,11 @@ function sendResponse(cont: Context, resp : ServerResponse, result : any){
         pro = Promise.resolve(resp.write(JSON.stringify(result)))
     }
     return pro
+}
+
+function setCORS(res: ServerResponse) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Request-Method', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', '*');
 }
