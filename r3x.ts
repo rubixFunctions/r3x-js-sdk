@@ -12,6 +12,7 @@ let errorRes = new ErrorHandler()
 let schema = new FuncSchema()
 
 const exceptionMessage = 'Function Exception'
+const fs = require('fs');
 
 // handle user function
 export function execute(r3x: Function) {
@@ -28,12 +29,17 @@ function HTTPStream(r3x: Function){
     }
 
     let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
-
-        let cors = schema.getSchema(join(__dirname, "schema.json")).cors
-        
-        if (cors) {
-            setCORS(res)
-        }
+        let schemaPath = join(__dirname, "schema.json")
+        try {
+            if (fs.existsSync(schemaPath)) {
+                let cors = schema.getSchema(schemaPath).cors
+                if (cors) {
+                    setCORS(res)
+                }
+            }
+          } catch(err) {
+            errorRes.sendJSONError(res, 502, {message: "No `schema.json` detected" , detail: err.message.toString()})
+          }
 
         let input = new JSONHandler()
 
