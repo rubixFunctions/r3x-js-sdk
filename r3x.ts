@@ -14,12 +14,19 @@ let schema = new FuncSchema()
 const exceptionMessage = 'Function Exception'
 const fs = require('fs');
 
-// handle user function
+/**
+ * Function user is visible too
+ * Triggers SDK
+ * @param r3x {Function}
+ */
 export function execute(r3x: Function) {
     HTTPStream(r3x)
 }
 
-// handle http stream,
+/**
+ * Takes users function and handles requests and responses
+ * @param r3x {Function}
+ */
 function HTTPStream(r3x: Function){
     let port = 8080
 
@@ -27,7 +34,11 @@ function HTTPStream(r3x: Function){
         console.log("Error Configuration. Missing Port")
         process.exit(2)
     }
-    // handles incoming request and response
+    /**
+     * Handles function request and responses
+     * @param req {IncomingMessage}
+     * @param res {ServerResponse}
+     */
     let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
         //declare schema path and get if cors is to be enabled
         let schemaPath = join(__dirname, "schema.json")
@@ -87,7 +98,9 @@ function HTTPStream(r3x: Function){
         })
     }
 
-    // create http server
+    /**
+     * Creates HTTP server
+     */
     http.createServer(functionHandler).listen(port)
     .on('error', (error : any) => {
         console.log(`Connection failed to port ${port}`, error)
@@ -115,7 +128,10 @@ function sendResponse(cont: Context, resp : ServerResponse, result : any){
     return pro
 }
 
-// set CORS headers
+/**
+ * Sets CORS headers
+ * @param res {ServerResponse}
+ */
 function setCORS(res: ServerResponse) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Request-Method', '*');

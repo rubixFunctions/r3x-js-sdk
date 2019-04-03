@@ -7,10 +7,17 @@ class JSONHandler implements Handler {
         this.str = ''
     }
 
+    /**
+     * Pushs JSON data to a string
+     * @param data JSON
+     */
     pushData (data : JSON) {
         this.str += data
     }
 
+    /**
+     * Parses JSON string
+     */
     getBody () {
         try {
             return JSON.parse(this.str)

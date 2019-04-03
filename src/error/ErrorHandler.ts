@@ -3,6 +3,12 @@ import { ErrorJSONMessage } from "./ErrorJSONMessage";
 
 // ErrorHandler, returns error message
 class ErrorHandler{
+    /**
+     * Returns a error response
+     * @param resp {ServerResponse}
+     * @param code {number}
+     * @param error {ErrorJSONMessage}
+     */
     sendJSONError(resp: ServerResponse, code: number, error: ErrorJSONMessage){
         let err = JSON.stringify(error)
 
