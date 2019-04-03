@@ -1,45 +1,73 @@
 import { ServerResponse, IncomingMessage } from "http";
 import { JSONHandler } from './src/handlers/JSONhandler';
-import { ErrorHandler } from './src/error/ErrorHandler'
-import { Context } from './src/context/Context'
+import { ErrorHandler } from './src/error/ErrorHandler';
+import { FuncSchema } from './src/schema/schemaHandler';
+import { Context } from './src/context/Context';
+import { join } from "path";
 
 let http = require('http')
 
 let errorRes = new ErrorHandler()
 
-const exceptionMessage = 'Function Exception'
+let schema = new FuncSchema()
 
-// handle user function
-export function execute(r3x: Function, schema: any) {
-    HTTPStream(r3x, schema)
+const exceptionMessage = 'Function Exception'
+const fs = require('fs');
+
+/**
+ * Function user is visible too
+ * Triggers SDK
+ * @param r3x {Function}
+ */
+export function execute(r3x: Function) {
+    HTTPStream(r3x)
 }
 
-// handle http stream,
-function HTTPStream(r3x: Function, schema: any){
-    let port = process.env.PORT || 8080
+/**
+ * Takes users function and handles requests and responses
+ * @param r3x {Function}
+ */
+function HTTPStream(r3x: Function){
+    let port = 8080
 
     if (port == null) {
         console.log("Error Configuration. Missing Port")
         process.exit(2)
     }
-
+    /**
+     * Handles function request and responses
+     * @param req {IncomingMessage}
+     * @param res {ServerResponse}
+     */
     let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Request-Method', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', '*');
-        res.setHeader('Content-Type', 'application/json')
-
+        //declare schema path and get if cors is to be enabled
+        let schemaPath = join(__dirname, "schema.json")
+        try {
+            if (fs.existsSync(schemaPath)) {
+                let cors = schema.getSchema(schemaPath).cors
+                if (cors) {
+                    //set cors headers
+                    setCORS(res)
+                }
+            }
+        } catch(err) {
+            errorRes.sendJSONError(res, 502, {message: "No `schema.json` detected" , detail: err.message.toString()})
+        }
+        
+        // declare JSON Handler
         let input = new JSONHandler()
 
+        // Check only POST and OPTIONS request. OPTIONS is allowed for preflight requests
         if (req.method !== 'POST' && req.method !== 'OPTIONS'){
             errorRes.sendJSONError(res, 400, {message: "Invalid method", detail: `${req.method} ${req.url}`})
             return
         }
 
+        // Handle request
         req.on('error', (err) => {
             errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
         }).on('data', chunk => {
+            // parse request body
             input.pushData(chunk)
         }).on('end', () => {
             let headers = {}
@@ -49,6 +77,7 @@ function HTTPStream(r3x: Function, schema: any){
 
             cont.responseContentType = 'application/json'
 
+            // handle user function execution
             new Promise(function (res, rej) {
                 try {
                     return res(r3x(body))
@@ -69,6 +98,9 @@ function HTTPStream(r3x: Function, schema: any){
         })
     }
 
+    /**
+     * Creates HTTP server
+     */
     http.createServer(functionHandler).listen(port)
     .on('error', (error : any) => {
         console.log(`Connection failed to port ${port}`, error)
@@ -94,4 +126,15 @@ function sendResponse(cont: Context, resp : ServerResponse, result : any){
         pro = Promise.resolve(resp.write(JSON.stringify(result)))
     }
     return pro
+}
+
+/**
+ * Sets CORS headers
+ * @param res {ServerResponse}
+ */
+function setCORS(res: ServerResponse) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Request-Method', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', '*');
 }

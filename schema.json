@@ -1,0 +1,6 @@
+{
+"name" : "r3x-helloworld",
+"funcType" : "js",
+"response" : "json",
+"cors" : true
+}
