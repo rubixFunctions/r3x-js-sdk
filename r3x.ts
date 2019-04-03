@@ -10,13 +10,13 @@ let errorRes = new ErrorHandler()
 const exceptionMessage = 'Function Exception'
 
 // handle user function
-export function execute(r3x: Function, schema: any) {
-    HTTPStream(r3x, schema)
+export function execute(r3x: Function) {
+    HTTPStream(r3x)
 }
 
 // handle http stream,
-function HTTPStream(r3x: Function, schema: any){
-    let port = process.env.PORT || 8080
+function HTTPStream(r3x: Function){
+    let port = 8080
 
     if (port == null) {
         console.log("Error Configuration. Missing Port")
