@@ -4,7 +4,7 @@ import { Handler } from "./Handler";
 class JSONHandler implements Handler {
     str: string;
     constructor() {
-        this.str = ''
+        this.str = '';
     }
 
     /**
@@ -12,7 +12,7 @@ class JSONHandler implements Handler {
      * @param data JSON
      */
     pushData (data : JSON) {
-        this.str += data
+        this.str += data;
     }
 
     /**
@@ -20,9 +20,9 @@ class JSONHandler implements Handler {
      */
     getBody () {
         try {
-            return JSON.parse(this.str)
+            return JSON.parse(this.str);
         } catch (e) {
-            return this.str
+            return this.str;
         }
     }
 }

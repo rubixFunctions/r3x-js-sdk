@@ -10,12 +10,12 @@ class ErrorHandler{
      * @param error {ErrorJSONMessage}
      */
     sendJSONError(resp: ServerResponse, code: number, error: ErrorJSONMessage){
-        let err = JSON.stringify(error)
+        const err = JSON.stringify(error);
 
-        console.warn(`Error ${code} : ${err}`)
-        resp.setHeader('Content-type', 'application/json')
-        resp.writeHead(code, 'internal error')
-        resp.end(err)
+        console.warn(`Error ${code} : ${err}`);
+        resp.setHeader('Content-type', 'application/json');
+        resp.writeHead(code, 'internal error');
+        resp.end(err);
     }
 }
 

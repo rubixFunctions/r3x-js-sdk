@@ -2,16 +2,16 @@ import { ContextInt } from "./ContextInt";
 
 // Handles Context
 class ContextHandler implements ContextInt{
-    config : any
-    payload : any
-    headers : any
-    responseHeaders: any
+    config : any;
+    payload : any;
+    headers : any;
+    responseHeaders: any;
 
     constructor(config : any, payload : any, headers : any){
-        this.config = config
-        this.payload = payload
-        this.headers = headers
-        this.responseHeaders = {}
+        this.config = config;
+        this.payload = payload;
+        this.headers = headers;
+        this.responseHeaders = {};
     }
 
     
@@ -19,51 +19,51 @@ class ContextHandler implements ContextInt{
      * Returns Configuration
      */
     getConfig(): any {
-        let conf = {}
-        Object.assign(conf, this.config)
-        return conf
+        const conf = {};
+        Object.assign(conf, this.config);
+        return conf;
     }
 
     /**
      * Returns body of the Request
      */
     getBody(): any {
-        return this.payload
+        return this.payload;
     }
 
     /**
      * Returns the content type
      */
     getContentType(): any {
-        return this.getHeader('Content-Type')
+        return this.getHeader('Content-Type');
     }
 
     /**
      * Return all headers
      */
     getHeaders(): any {
-        return this.headers
+        return this.headers;
     }
 
     /**
      * Returns a copy of the headers to be used in Res
      */
     getResponseHeaders(): Object {
-        let headers = {}
-        Object.assign(headers, this.responseHeaders)
-        return headers
+        const headers = {};
+        Object.assign(headers, this.responseHeaders);
+        return headers;
     }
 
     /**
      * Returns all headers for a specific key
      * @param key {string}
      */
-    getAllHeaders(key: string): Array<string> {
-        let h = this.headers[key]
+    getAllHeaders(key: string): string[] {
+        const h = this.headers[key];
         if (h == null) {
-            return []
+            return [];
         }
-        return h.slice(0)
+        return h.slice(0);
     }
 
     /**
@@ -71,18 +71,18 @@ class ContextHandler implements ContextInt{
      * @param key {string}
      */
     getHeader(key: string): string {
-        let h = this.headers[key]
+        const h = this.headers[key];
         if (h == null){
-            return ''
+            return '';
         }
-        return h[0]
+        return h[0];
     }
     /**
      * Returns a config value for a specific key
      * @param key {string}
      */
     getConfigValue(key: string): string {
-        return this.config.get(key)
+        return this.config.get(key);
     }
 
     /**
@@ -90,11 +90,11 @@ class ContextHandler implements ContextInt{
      * @param key {string}
      */
     getResponseHeader(key: string): string {
-        let h = this.responseHeaders[key]
+        const h = this.responseHeaders[key];
         if (h == null){
-            return ''
+            return '';
         }
-        return h[0]
+        return h[0];
     }
 
     /**
@@ -103,7 +103,7 @@ class ContextHandler implements ContextInt{
      * @param value {string}
      */
     setResponseHeader(key: string, value: string): void {
-        this.responseHeaders[key] = value
+        this.responseHeaders[key] = value;
     }
 
     /**
@@ -111,14 +111,14 @@ class ContextHandler implements ContextInt{
      * @param type {string}
      */
     setResponseContentType(type: string): void {
-        this.setResponseHeader('Content-Type', type)
+        this.setResponseHeader('Content-Type', type);
     }
 
     /**
      * Get res content type
      */
     getResponseContentType(): string {
-        return this.getResponseHeader('Content-Type')
+        return this.getResponseHeader('Content-Type');
     }
 }
 

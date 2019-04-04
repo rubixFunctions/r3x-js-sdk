@@ -1,10 +1,10 @@
 const fs = require('fs');
 
-interface schema {
+interface Schema {
     name : string;
     funcType: string;
     response: string;
-    cors: boolean
+    cors: boolean;
 }
 
 /* 
@@ -15,11 +15,11 @@ class FuncSchema {
      * Returns Schema Object
      * @param schemaLocation string
      */
-    public getSchema(schemaLocation: string) : any{
-        let rawdata = fs.readFileSync(schemaLocation);  
-        let schema: schema = JSON.parse(rawdata);  
-        return schema
+    getSchema(schemaLocation: string) : Schema{
+        const rawdata = fs.readFileSync(schemaLocation);  
+        const schema: Schema = JSON.parse(rawdata);  
+        return schema;
     }
 }
 
-export {FuncSchema}
+export {FuncSchema};
