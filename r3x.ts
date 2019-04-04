@@ -5,13 +5,13 @@ import { FuncSchema } from './src/schema/schemaHandler';
 import { Context } from './src/context/Context';
 import { join } from "path";
 
-let http = require('http')
+const http = require('http');
 
-let errorRes = new ErrorHandler()
+const errorRes = new ErrorHandler();
 
-let schema = new FuncSchema()
+const schema = new FuncSchema();
 
-const exceptionMessage = 'Function Exception'
+const exceptionMessage = 'Function Exception';
 const fs = require('fs');
 
 /**
@@ -20,7 +20,7 @@ const fs = require('fs');
  * @param r3x {Function}
  */
 export function execute(r3x: Function) {
-    HTTPStream(r3x)
+    HTTPStream(r3x);
 }
 
 /**
@@ -28,104 +28,103 @@ export function execute(r3x: Function) {
  * @param r3x {Function}
  */
 function HTTPStream(r3x: Function){
-    let port = 8080
+    const port = 8080;
 
     if (port == null) {
-        console.log("Error Configuration. Missing Port")
-        process.exit(2)
+        console.log("Error Configuration. Missing Port");
+        process.exit(2);
     }
     /**
      * Handles function request and responses
      * @param req {IncomingMessage}
      * @param res {ServerResponse}
      */
-    let functionHandler = (req: IncomingMessage, res: ServerResponse) => {
+    const functionHandler = (req: IncomingMessage, res: ServerResponse) => {
         //declare schema path and get if cors is to be enabled
-        let schemaPath = join(__dirname, "schema.json")
+        const schemaPath = join(__dirname, "schema.json");
         try {
             if (fs.existsSync(schemaPath)) {
-                let cors = schema.getSchema(schemaPath).cors
+                const cors = schema.getSchema(schemaPath).cors;
                 if (cors) {
                     //set cors headers
-                    setCORS(res)
+                    setCORS(res);
                 }
             }
         } catch(err) {
-            errorRes.sendJSONError(res, 502, {message: "No `schema.json` detected" , detail: err.message.toString()})
+            errorRes.sendJSONError(res, 502, {message: "No `schema.json` detected" , detail: err.message.toString()});
         }
         
         // declare JSON Handler
-        let input = new JSONHandler()
+        const input = new JSONHandler();
 
         // Check only POST and OPTIONS request. OPTIONS is allowed for preflight requests
         if (req.method !== 'POST' && req.method !== 'OPTIONS'){
-            errorRes.sendJSONError(res, 400, {message: "Invalid method", detail: `${req.method} ${req.url}`})
-            return
+            errorRes.sendJSONError(res, 400, {message: "Invalid method", detail: `${req.method} ${req.url}`});
+            return;
         }
 
         // Handle request
         req.on('error', (err) => {
-            errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
+            errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()});
         }).on('data', chunk => {
             // parse request body
-            input.pushData(chunk)
+            input.pushData(chunk);
         }).on('end', () => {
-            let headers = {}
+            const headers = {};
             
-            let body = input.getBody()
-            let cont = new Context(body, headers)
-
-            cont.responseContentType = 'application/json'
+            const body = input.getBody();
+            const cont = new Context(body, headers);
+            cont.responseContentType = 'application/json';
 
             // handle user function execution
-            new Promise(function (res, rej) {
+            new Promise((res, rej) => {
                 try {
-                    return res(r3x(body))
+                    return res(r3x(body));
                 } catch (err) {
-                    rej(err)
+                    rej(err);
                 } 
             }).then((result) => {
-                return sendResponse(cont, res, result)
+                return sendResponse(cont, res, result);
             }, (error) => {
-                errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: error.message.toString()})
+                errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: error.message.toString()});
 
             }).then(() => {
-                res.end()
+                res.end();
                 res.on('error', (err) => {
-                    errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()})
-                })
-            }).catch(err => errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()}))
-        })
-    }
+                    errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()});
+                });
+            }).catch(err => errorRes.sendJSONError(res, 502, {message: exceptionMessage , detail: err.message.toString()}));
+        });
+    };
 
     /**
      * Creates HTTP server
      */
     http.createServer(functionHandler).listen(port)
     .on('error', (error : any) => {
-        console.log(`Connection failed to port ${port}`, error)
-        process.exit(2)
-    })
+        console.log(`Connection failed to port ${port}`, error);
+        process.exit(2);
+    });
 } 
 
 
 // handle response
 function sendResponse(cont: Context, resp : ServerResponse, result : any){
-    let headers = cont._responseHeaders
-    for (let key in headers) {
+    const headers = cont._responseHeaders;
+    for (const key in headers) {
         if (headers.hasOwnPropery(key)){
-            resp.setHeader(key, headers[key])
+            resp.setHeader(key, headers[key]);
         }
     }
-    resp.removeHeader('Content-length')
-    resp.writeHead(200, 'OK')
+    resp.removeHeader('Content-length');
+    resp.writeHead(200, 'OK');
 
-    console.log(result)
-    let pro : Promise<any> | undefined
+    console.log(result);
+    let pro : Promise<any> | undefined;
     if(result != null) {
-        pro = Promise.resolve(resp.write(JSON.stringify(result)))
+        pro = Promise.resolve(resp.write(JSON.stringify(result)));
     }
-    return pro
+    return pro;
 }
 
 /**
